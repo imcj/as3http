@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="SocketServer.StreamRequestHandler"/>
+    <classEntry path="BaseHTTPServer.BaseHTTPRequestHandler"/>
+    <classEntry path="BaseHTTPServer.HTTPServer"/>
+    <classEntry path="rfc822.Message"/>
+    <classEntry path="mimetools.Message"/>
+    <classEntry path="mimetools.IOIterator"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>
