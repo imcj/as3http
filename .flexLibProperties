@@ -6,7 +6,9 @@
     <classEntry path="BaseHTTPServer.HTTPServer"/>
     <classEntry path="rfc822.Message"/>
     <classEntry path="mimetools.Message"/>
-    <classEntry path="mimetools.IOIterator"/>
+    <classEntry path="ReadIterator"/>
+    <classEntry path="s.isin"/>
+    <classEntry path="s.isspace"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

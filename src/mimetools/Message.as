@@ -4,9 +4,9 @@ package mimetools
 	
 	public class Message extends rfc822.Message
 	{
-		public function Message ( iterator : IOIterator, seekable : Boolean = true )
+		public function Message ( iterator : ReadIterator, seekable : Boolean = true )
 		{
-			super ( );
+			super ( iterator, seekable );
 		}
 	}
 }

@@ -23,14 +23,14 @@ package BaseHTTPServer
 		public var command : String;
 		public var raw_requestline:String;
 		public var requestline:String;
-		public var iter : SocketTextIter;
+		public var iter : ReadIterator;
 		public var headers : Dictionary;
 		public var MessageClass : Class = mimetools.Message;
 		
 		public function BaseHTTPRequestHandler(request:Socket, client_address:Array, server:BaseServer)
 		{
 			super(request, client_address, server);
-			iter = new SocketTextIter ( request );
+			iter = new ReadIterator ( request );
 		}
 		
 		override public function handle ( ) : void
@@ -78,7 +78,6 @@ package BaseHTTPServer
 			var words : Array;
 			var command : String;
 			var path : String;
-			var version : String;
 			var conntype : String;
 			
 			command = null;
@@ -138,34 +137,5 @@ package BaseHTTPServer
 			if ( 'HTTP/0.9' != request_version )
 				request.writeUTFBytes ( "\r\n" );
 		}
-	}
-}
-import flash.net.Socket;
-
-class SocketTextIter
-{
-	private var _socket:Socket;
-	private var data:String;
-	private var offset : int = 0;
-	
-	public function SocketTextIter ( socket : Socket )
-	{
-		_socket = socket;
-	}
-	
-	public function readline ( length : int ) : String
-	{
-		if ( _socket.bytesAvailable > 0 )
-			data += _socket.readUTFBytes ( 65537 );
-		
-		var index : int = data.indexOf ( "\r\n", offset );
-		var found : String;
-		if ( index > -1 ) {
-			found = data.substring ( offset, index );
-			offset = index + "\r\n".length;
-		} else
-			found = null;
-		
-		return found;
 	}
 }
