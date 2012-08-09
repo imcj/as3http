@@ -1,19 +1,24 @@
 package rfc822
 {
+	import mx.utils.StringUtil;
+	
 	import s.isin;
 	import s.isspace;
+	import s.strip;
+	
+	import utils.TextIterator;
 
 	public class Message
 	{
-		public var iterator : ReadIterator;
+		public var iterator : TextIterator;
 		public var seekable : Boolean;
 		
 		public var dict : Object = {};
 		public var unixfrom : String = '';
-		public var headers : Array = new Array ( );
+		public var headers : Array;
 		public var status : String = '';
 		
-		public function Message ( iterator : ReadIterator, seekable : Boolean = true )
+		public function Message ( iterator : TextIterator, seekable : Boolean = true )
 		{
 			this.iterator = iterator;
 			this.seekable = seekable;
@@ -24,23 +29,29 @@ package rfc822
 		public function readheaders():void
 		{
 			var line : String;
-			var lst : Array = new Array ( );
+			var lst : Array = headers = new Array ( );
 			var firstLine : Boolean = true;
 			var headerseen : String;
+			var x : String;
 			while ( true ) {
 				line = iterator.readline ( 65537 );
 				if ( ! line )
 					break;
 				
-				if ( firstLine && line.indexOf ( "From " ) )
+				if ( firstLine && line.indexOf ( "From " ) > -1 )
 					unixfrom = unixfrom + line;
 				
 				firstLine = false;
-				
+				if ( headerseen && isin ( line.substr ( 0, 1 ), " \t" ) ) {
+					lst[lst.length] = line;
+					x = dict[headerseen] + "\n" + strip ( line );
+					dict[headerseen] = strip ( x );
+					continue;
+				}
 				headerseen = isheader ( line );
 				if ( headerseen ) {
 					lst[lst.length] = line;
-					dict[headerseen] = line.substring ( headerseen.length + 1 );
+					dict[headerseen] = strip ( line.substring ( headerseen.length + 1 ) );
 				} else {
 					// TODO Not dict
 					if ( ! dict )
@@ -64,7 +75,7 @@ package rfc822
 			return isin ( line, [ '\r\n', '\n' ] );
 		}
 		
-		public function iscomment ( line ) : Boolean
+		public function iscomment ( line : String ) : Boolean
 		{
 			return false;
 		}
@@ -80,14 +91,14 @@ package rfc822
 			lst = new Array ( );
 			hit = 0;
 			
-			for each ( line in headers )
+			for each ( line in headers ) {
 				if ( line.substring ( 0, n ).toLowerCase ( ) == name )
 					hit = 1;
 				else if ( isspace ( line.substring ( 0, 1 ) ) )
 					hit = 0;
 				if ( hit )
 					lst[lst.length] = line;
-						
+			}
 			return lst;
 		}
 		
@@ -114,9 +125,17 @@ package rfc822
 			return lst;
 		}
 		
-		public function getheader ( name : String, Default : String = null ) : String
+		public function getheader ( name : String, Default : String = "" ) : String
 		{
-			return dict[name.toUpperCase ( )];
+			var header : String = dict[name.toLowerCase ( )];
+			if ( header == null )
+				return Default;
+			return header;
+		}
+		
+		public function get ( name : String, Default : String = "" ) : String
+		{
+			return getheader ( name, Default );
 		}
 		
 		public function getheaders ( name : String ) : Array
@@ -129,8 +148,20 @@ package rfc822
 			for each ( str in getallmatchingheaders ( name ) ) {
 				if ( isspace ( str.substring ( 0, 1 ) ) )
 					if ( current )
-						current = 
+						current = StringUtil.substitute ( "{0}\n {1}", current, strip ( str ) );
+					else
+						current = strip ( str );
+				else {
+					if ( have_header )
+						result[result.length] = current;
+					current = strip ( str.substring ( str.indexOf ( ":" ) + 1, str.length ) );
+					have_header = true;
+					
+				}
 			}
+			if ( have_header )
+				result[result.length] = current;
+			return result;
 		}
 	}
 }

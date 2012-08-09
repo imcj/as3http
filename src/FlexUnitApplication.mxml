@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 此文件是自动生成的，不可修改。 -->
+
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:flexui="flexunit.flexui.*"
+					   creationComplete="onCreationComplete()" showStatusBar="false">
+	<fx:Script>
+		<![CDATA[
+			import flexUnitTests.BaseHTTPServer.TestBaseHTTPRequestHandler;
+			
+			public function currentRunTestSuite():Array
+			{
+				var testsToRun:Array = new Array();
+				testsToRun.push(flexUnitTests.BaseHTTPServer.TestBaseHTTPRequestHandler);
+				return testsToRun;
+			}
+			
+			
+			private function onCreationComplete():void
+			{
+				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "as3http");
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<flexui:FlexUnitTestRunnerUI id="testRunner" portNumber="8765">
+	</flexui:FlexUnitTestRunnerUI>
+</s:WindowedApplication>

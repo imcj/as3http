@@ -6,9 +6,18 @@
     <classEntry path="BaseHTTPServer.HTTPServer"/>
     <classEntry path="rfc822.Message"/>
     <classEntry path="mimetools.Message"/>
-    <classEntry path="ReadIterator"/>
+    <classEntry path="utils.TextIterator"/>
     <classEntry path="s.isin"/>
     <classEntry path="s.isspace"/>
+    <classEntry path="flexUnitTests.rfc822.TestMessage"/>
+    <classEntry path="s.strip"/>
+    <classEntry path="flexUnitTests.s.TestStrip"/>
+    <classEntry path="s.rstrip"/>
+    <classEntry path="flexUnitTests.utils.TestTextIterator"/>
+    <classEntry path="flexUnitTests.BaseHTTPServer.TestBaseHTTPRequestHandler"/>
+    <classEntry path="SimpleHTTPServer.SimpleHTTPRequestHandler"/>
+    <classEntry path="posixpath"/>
+    <classEntry path="genericpath"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
